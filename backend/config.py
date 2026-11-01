@@ -11,9 +11,10 @@ class Config:
     JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', 'student_cert_jwt_secret_key_2026_jwt')
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=24)
     
-    # MongoDB Atlas connection string or fallback
-    MONGO_URI = os.getenv('MONGO_URI', 'mongodb://localhost:27017/student_certificate_db')
-    DB_NAME = os.getenv('DB_NAME', 'student_certificate_db')
+    # MongoDB Atlas connection string and database configuration
+    MONGO_URI = os.getenv('MONGO_URI', '')
+    DB_NAME = os.getenv('DB_NAME', 'mastermind_certificate_db')
+    ALLOW_MOCK_DB = os.getenv('ALLOW_MOCK_DB', 'true').lower() in ('true', '1', 'yes')
 
     # Base URLs for dynamic QR codes and verification
     BACKEND_URL = os.getenv('BACKEND_URL', 'http://localhost:5000')

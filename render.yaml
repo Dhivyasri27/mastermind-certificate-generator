@@ -2,6 +2,7 @@ services:
   - type: web
     name: mastermind-certificate-backend
     runtime: python
+    plan: free
     rootDir: backend
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn app:app --workers 2 --threads 4 --timeout 120
