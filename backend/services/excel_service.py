@@ -45,9 +45,21 @@ def parse_student_file(file_path_or_stream, filename):
 
     try:
         if ext in ['.xlsx', '.xls']:
-            import pandas as pd
-            df = pd.read_excel(file_path_or_stream)
-            raw_rows = df.to_dict(orient='records')
+            try:
+                import openpyxl
+                wb = openpyxl.load_workbook(file_path_or_stream, data_only=True)
+                sheet = wb.active
+                rows = list(sheet.iter_rows(values_only=True))
+                if rows:
+                    headers = [str(h).strip() if h is not None else f"col_{i}" for i, h in enumerate(rows[0])]
+                    raw_rows = []
+                    for row in rows[1:]:
+                        if any(v is not None and str(v).strip() != '' for v in row):
+                            raw_rows.append({headers[i]: row[i] for i in range(min(len(headers), len(row)))})
+            except Exception:
+                import pandas as pd
+                df = pd.read_excel(file_path_or_stream)
+                raw_rows = df.to_dict(orient='records')
         else:
             # Assume CSV
             if isinstance(file_path_or_stream, str):

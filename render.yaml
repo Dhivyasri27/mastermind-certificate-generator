@@ -4,11 +4,9 @@ services:
     runtime: python
     plan: free
     rootDir: backend
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install --prefer-binary -r requirements.txt
     startCommand: gunicorn app:app -c gunicorn.conf.py
     envVars:
-      - key: PYTHON_VERSION
-        value: 3.11.9
       - key: FLASK_ENV
         value: production
       - key: SECRET_KEY
