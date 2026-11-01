@@ -33,6 +33,18 @@ def create_app():
     except Exception as e:
         app.logger.warning(f"Database seeding warning: {e}")
 
+    @app.route('/', methods=['GET'])
+    def root_health():
+        return jsonify({
+            'status': 'healthy',
+            'service': 'Mastermind Certificate Generator API',
+            'version': '1.0.0'
+        }), 200
+
+    @app.route('/healthz', methods=['GET'])
+    def healthz():
+        return jsonify({'status': 'ok'}), 200
+
     @app.route('/api/health', methods=['GET'])
     def health_check():
         return jsonify({
