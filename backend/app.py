@@ -62,6 +62,14 @@ def create_app():
     def serve_generated_certificate(filename):
         return send_from_directory(Config.GENERATED_FOLDER, filename)
 
+    @app.errorhandler(ConnectionError)
+    def handle_db_error(e):
+        return jsonify({
+            'error': 'Database Connection Error',
+            'message': str(e),
+            'help': 'Ensure MONGO_URI is configured in Render Environment variables and 0.0.0.0/0 is allowed in MongoDB Atlas Network Access.'
+        }), 503
+
     return app
 
 app = create_app()
